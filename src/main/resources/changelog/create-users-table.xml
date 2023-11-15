@@ -17,13 +17,7 @@
       <column name="chat_id" type="BIGINT" >
         <constraints primaryKey="true"/>
       </column>
-      <column name="balance_rub" type="DOUBLE">
-        <constraints unique="true" nullable="true"/>
-      </column>
-      <column name="balance_usd" type="DOUBLE">
-        <constraints unique="true" nullable="true"/>
-      </column>
-      <column name="balance_eur" type="DOUBLE">
+      <column name="last_message_at" type="TIMESTAMP">
         <constraints unique="true" nullable="true"/>
       </column>
     </createTable>

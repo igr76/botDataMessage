@@ -1,13 +1,11 @@
 package com.botdatamessage.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+/** Сущность хранения сообщений */
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,8 +13,12 @@ import lombok.Setter;
 @Entity
 @Table(name = "messages")
 public class Messages {
+    /** идентификационный номер сообщений */
     @Id
-    int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    long id;
+    /** Текст сообщений */
     String message;
+    /** Владелец сообщений */
     long chatId;
 }

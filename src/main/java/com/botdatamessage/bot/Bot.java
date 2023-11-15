@@ -1,7 +1,11 @@
 package com.botdatamessage.bot;
 
+import com.botdatamessage.config.BotConfig;
+import com.botdatamessage.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -10,7 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.time.LocalDate;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,24 +22,25 @@ import java.util.List;
 @Slf4j
 @Component
 public class Bot extends TelegramLongPollingBot {
+    final BotConfig config;
+    @Autowired
+    private MessageService messageService;
 
-    @Value("${bot.name}")
-    private String botUsername;
-
-    @Value("${bot.token}")
-    private String botToken;
     private static final String START = "/start";
     private static final String HELP = "/help";
 
+    public Bot(BotConfig config) {
+        this.config = config;
+    }
 
     @Override
     public String getBotUsername() {
-        return botUsername;
+        return config.getBotName();
     }
 
     @Override
     public String getBotToken() {
-        return botToken;
+        return config.getToken();
     }
 
     @Override
@@ -47,14 +52,26 @@ public class Bot extends TelegramLongPollingBot {
         String[] textArray = messageTextAfter.split(" ");
         String message = textArray[0];
         var chatId = update.getMessage().getChatId();
+        lastMessageRegister( chatId,messageTextAfter);
         switch (message) {
             case START -> {
                 String userName = update.getMessage().getChat().getUserName();
+                try {
+                    getBackorderRu();
+                    log.info("start");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 startCommand(chatId, userName);
             }
             case HELP -> helpCommand(chatId);
             default -> unknownCommand(chatId);
         }
+    }
+
+    private void lastMessageRegister(Long chatId,String text) {
+        messageService.lastMessageRegister(chatId);
+     //   messageService.addMessage(chatId,text);
     }
 
 
@@ -111,5 +128,17 @@ public class Bot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             log.error("Ошибка отправки сообщения", e);
         }
+    }
+    // Суточный отчет
+    @Scheduled(cron = "0 0 0 * * *")
+    private void sendReport() {
+//        messageService.sendReport().entrySet().stream()
+//                .forEach(e -> sendMessage(e.getKey(),e.getValue()));
+
+    }
+   // @Scheduled(cron = "0 0 0 * * *")
+    private void getBackorderRu() throws IOException {
+        log.info("getBackorderRu");
+        messageService.setDailyDomains();
     }
 }
