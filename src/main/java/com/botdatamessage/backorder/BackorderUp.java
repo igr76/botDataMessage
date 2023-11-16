@@ -1,6 +1,7 @@
 package com.botdatamessage.backorder;
 
 import com.botdatamessage.model.Domain;
+import com.botdatamessage.service.DomainService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +22,7 @@ import java.util.List;
 @Slf4j
 @Component
 public class BackorderUp {
+    private  DomainService domainService;
     private OkHttpClient client;
 
     @Value("${https://backorder.ru/json/?order=desc&expired=1&by=hotness&page=1&items=50}")
@@ -32,9 +34,11 @@ public class BackorderUp {
 
         try {Domain[] domains = objectMapper.readValue(new URL(daily_domains), Domain[].class);
             log.info("закачка с сайта");
+            for (Domain e : domains) {domainService.addDomain(e);}
         } catch (IOException e) {
             // handles IO exceptions
         }
+       
        // List<Domain> list = objectMapper.readValue(stringDomain, new TypeReference<List<Domain>>() { });
        // return list;
 
