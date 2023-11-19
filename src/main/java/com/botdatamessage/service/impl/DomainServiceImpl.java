@@ -10,4 +10,9 @@ public class DomainServiceImpl implements DomainService {
     public void addDomain(Domain domain) {
         domainRepository.save(domain);
     }
+
+    @Override
+    public void clearDomain() {
+        domainRepository.deleteAll();
+    }
 }

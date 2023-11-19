@@ -1,37 +1,34 @@
 package com.botdatamessage.service.impl;
 
 import com.botdatamessage.backorder.BackorderUp;
-import com.botdatamessage.model.Domain;
 import com.botdatamessage.model.Messages;
 import com.botdatamessage.model.User;
 import com.botdatamessage.repository.DomainRepository;
 import com.botdatamessage.repository.MessagesRepository;
 import com.botdatamessage.repository.UserRepository;
+import com.botdatamessage.service.DomainService;
 import com.botdatamessage.service.MessageService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 @Service
 public class MessageServiceImpl implements MessageService {
     private UserRepository userRepository;
     private DomainRepository domainRepository;
     private MessagesRepository messagesRepository;
     private BackorderUp backorder;
+    private DomainService domainService;
 
-    public MessageServiceImpl(UserRepository userRepository, DomainRepository domainRepository, MessagesRepository messagesRepository, BackorderUp backorder) {
+    public MessageServiceImpl(UserRepository userRepository, DomainRepository domainRepository, MessagesRepository messagesRepository, BackorderUp backorder, DomainService domainService) {
         this.userRepository = userRepository;
         this.domainRepository = domainRepository;
         this.messagesRepository = messagesRepository;
         this.backorder = backorder;
+        this.domainService = domainService;
     }
 
     @Override
@@ -58,7 +55,8 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void setDailyDomains() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        backorder.getDailyDomains();
+        domainService.clearDomain();
+        backorder.setDailyDomains();
       //  List<Domain> domainList = mapper.readValue(backorder.getDailyDomains(), Domain.class);
 
     }
