@@ -5,4 +5,6 @@ import com.botdatamessage.model.Domain;
 public interface DomainService {
     /** Добавить сообщение */
     void addDomain(Domain domain);
+    /** Добавить сообщение */
+    void clearDomain();
 }

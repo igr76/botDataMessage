@@ -28,7 +28,7 @@ public class BackorderUp {
     @Value("${https://backorder.ru/json/?order=desc&expired=1&by=hotness&page=1&items=50}")
     private String daily_domains ;
 
-    public void  /** List<DailyDomain> */ getDailyDomains () throws ServiceException, IOException {
+    public void   setDailyDomains () throws ServiceException, IOException {
         log.info("getDailyDomains");
         ObjectMapper objectMapper = new ObjectMapper();
 
