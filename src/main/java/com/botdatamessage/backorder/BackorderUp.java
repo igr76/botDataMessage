@@ -31,7 +31,6 @@ public class BackorderUp {
     public void   setDailyDomains () throws ServiceException, IOException {
         log.info("getDailyDomains");
         ObjectMapper objectMapper = new ObjectMapper();
-
         try {Domain[] domains = objectMapper.readValue(new URL(daily_domains), Domain[].class);
             log.info("закачка с сайта");
             for (Domain e : domains) {domainService.addDomain(e);}
@@ -43,21 +42,5 @@ public class BackorderUp {
        // return list;
 
     }
-//        try (BufferedInputStream inputStream = new BufferedInputStream(new URL(daily_domains).openStream());
-//    FileOutputStream fileOS = new FileOutputStream("\\Users\\Игорь\\Downloads\\backorder.json")) {
-//        byte data[] = new byte[1024];
-//        int byteContent;
-//        while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-//            fileOS.write(data, 0, byteContent);
-//        }
-//        log.info("закачка с сайта");
-//    } catch (IOException e) {
-//        // handles IO exceptions
-//    }
-//        try {
-//        Path path = Paths.get("\\Users\\Игорь\\Downloads\\backorder.json");
-//        stringDomain = Files.readString(path);
-//    } catch (IOException e) {
-//        e.printStackTrace();
-//    }
+
 }
