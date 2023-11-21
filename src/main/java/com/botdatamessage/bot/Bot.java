@@ -57,7 +57,7 @@ public class Bot extends TelegramLongPollingBot {
             case START -> {
                 String userName = update.getMessage().getChat().getUserName();
                 try {
-                    getBackorderRu();
+                    setBackorderRu();
                     log.info("start");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -137,8 +137,8 @@ public class Bot extends TelegramLongPollingBot {
 
     }
    // @Scheduled(cron = "0 0 0 * * *")
-    private void getBackorderRu() throws IOException {
-        log.info("getBackorderRu");
+    private void setBackorderRu() throws IOException {
+        log.info("setBackorderRu");
         messageService.setDailyDomains();
     }
 }
