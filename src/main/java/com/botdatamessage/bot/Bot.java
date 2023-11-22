@@ -56,12 +56,6 @@ public class Bot extends TelegramLongPollingBot {
         switch (message) {
             case START -> {
                 String userName = update.getMessage().getChat().getUserName();
-                try {
-                    setBackorderRu();
-                    log.info("start");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
                 startCommand(chatId, userName);
             }
             case HELP -> helpCommand(chatId);
@@ -70,8 +64,7 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     private void lastMessageRegister(Long chatId,String text) {
-        messageService.lastMessageRegister(chatId);
-     //   messageService.addMessage(chatId,text);
+        messageService.lastMessageRegister(chatId,text);
     }
 
 
@@ -116,13 +109,6 @@ public class Bot extends TelegramLongPollingBot {
     private void sendMessage(Long chatId, String text) {
         var chatIdStr = String.valueOf(chatId);
         var sendMessage = new SendMessage(chatIdStr, text);
-        ReplyKeyboardMarkup keyboardMarkup =new ReplyKeyboardMarkup();
-        List<KeyboardRow> keyboardRows = new ArrayList<>();
-        KeyboardRow row= new KeyboardRow();
-        row.add("/getMoney");row.add("/usd");row.add("/eur ");
-        keyboardRows.add(row);
-        keyboardMarkup.setKeyboard(keyboardRows);
-        sendMessage.setReplyMarkup(keyboardMarkup);
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
@@ -132,11 +118,11 @@ public class Bot extends TelegramLongPollingBot {
     // Суточный отчет
     @Scheduled(cron = "0 0 0 * * *")
     private void sendReport() {
-//        messageService.sendReport().entrySet().stream()
-//                .forEach(e -> sendMessage(e.getKey(),e.getValue()));
+        messageService.sendReport().entrySet().stream()
+                .forEach(e -> sendMessage(e.getKey(),e.getValue()));
 
     }
-   // @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     private void setBackorderRu() throws IOException {
         log.info("setBackorderRu");
         messageService.setDailyDomains();
