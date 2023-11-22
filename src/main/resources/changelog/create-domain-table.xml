@@ -41,7 +41,7 @@
             <column name="old" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_message_at" type="DATE">
+            <column name="delete_date" type="DATE">
                 <constraints unique="true" nullable="true"/>
             </column>
             <column name="rkn" type="BOOLEAN">

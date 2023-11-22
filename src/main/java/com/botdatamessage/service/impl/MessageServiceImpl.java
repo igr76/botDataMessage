@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class MessageServiceImpl implements MessageService {
@@ -30,26 +33,30 @@ public class MessageServiceImpl implements MessageService {
         this.backorder = backorder;
         this.domainService = domainService;
     }
-
+    private String N;
     @Override
-    public void lastMessageRegister(long chatId) {
+    public void lastMessageRegister(long chatId, String text) {
         User user = new User();
         user.setChatId(chatId);
         user.setLast_message_at(LocalDateTime.now());
         userRepository.save(user);
-    }
-
-    @Override
-    public void addMessage(Long chatId, String text) {
         Messages messages = new Messages();
-        messages.setChatId(chatId);
+        messages.setChatId(user);
         messages.setMessage(text);
         messagesRepository.save(messages);
     }
 
+
     @Override
-    public String sendReport() {
-        return LocalDate.now().toString()+ "собрано: "+ domainRepository.count()+ " доменов";
+    public Map<Long, String> sendReport() {
+        String text =LocalDate.now().toString()+ "собрано: "+ N+ " доменов";
+        List<Long> listUsers = userRepository.findAllChatId();
+        Map<Long,String> reports = new HashMap<>();
+        for (Long e :
+                listUsers) {
+            reports.put(e,text);
+        }
+        return reports;
     }
 
     @Override

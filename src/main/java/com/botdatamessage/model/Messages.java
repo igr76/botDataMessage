@@ -20,5 +20,6 @@ public class Messages {
     /** Текст сообщений */
     String message;
     /** Владелец сообщений */
-    long chatId;
+    @ManyToOne
+    User chatId;
 }
