@@ -1,10 +1,10 @@
 package com.botdatamessage.service;
 
 import com.botdatamessage.model.Domain;
-
+/** Сервис доменов */
 public interface DomainService {
-    /** Добавить сообщение */
+    /** Добавить домен */
     void addDomain(Domain domain);
-    /** Добавить сообщение */
+    /** Удалить все домены */
     void clearDomain();
 }
