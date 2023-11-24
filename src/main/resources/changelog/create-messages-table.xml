@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="create-messages-table" author="igor">
+
+        <preConditions>
+            <not>
+                <tableExists tableName="messages"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="messages">
+            <column name="id" type="BIGINT" >
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="message" type="VARCHAR(32)">
+                <constraints  nullable="true"/>
+            </column>
+            <column name="chatId" type="BIGINT">
+                <constraints  nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="chatId" constraintName="messages_chat_Id" referencedTableName="users"
+                                 referencedColumnNames="chat_id" onUpdate="CASCADE"/>
+
+    </changeSet>
+
+</databaseChangeLog>
