@@ -17,18 +17,17 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/** Реализация сервиса сообщений */
 @Service
 public class MessageServiceImpl implements MessageService {
     private UserRepository userRepository;
-    private DomainRepository domainRepository;
+
     private MessagesRepository messagesRepository;
     private BackorderUp backorder;
     private DomainService domainService;
 
-    public MessageServiceImpl(UserRepository userRepository, DomainRepository domainRepository, MessagesRepository messagesRepository, BackorderUp backorder, DomainService domainService) {
+    public MessageServiceImpl(UserRepository userRepository, MessagesRepository messagesRepository, BackorderUp backorder, DomainService domainService) {
         this.userRepository = userRepository;
-        this.domainRepository = domainRepository;
         this.messagesRepository = messagesRepository;
         this.backorder = backorder;
         this.domainService = domainService;
@@ -52,10 +51,7 @@ public class MessageServiceImpl implements MessageService {
         String text =LocalDate.now().toString()+ "собрано: "+ N+ " доменов";
         List<Long> listUsers = userRepository.findAllChatId();
         Map<Long,String> reports = new HashMap<>();
-        for (Long e :
-                listUsers) {
-            reports.put(e,text);
-        }
+        for (Long e : listUsers) {reports.put(e,text);}
         return reports;
     }
 
@@ -64,7 +60,6 @@ public class MessageServiceImpl implements MessageService {
         ObjectMapper mapper = new ObjectMapper();
         domainService.clearDomain();
         backorder.setDailyDomains();
-      //  List<Domain> domainList = mapper.readValue(backorder.getDailyDomains(), Domain.class);
 
     }
 }

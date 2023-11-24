@@ -70,13 +70,9 @@ public class Bot extends TelegramLongPollingBot {
 
     private void startCommand(Long chatId, String userName) {
         var text = """
-                Добро пожаловать в бот, %s!
+                Добро пожаловать в бот
                 
-                Здесь Вы сможете узнать официальные курсы валют на сегодня, установленные ЦБ РФ.
-                
-                Для этого воспользуйтесь командами:
-                /usd - курс доллара
-                /eur - курс евро
+         
                 
                 Дополнительные команды:
                 /help - получение справки
@@ -90,14 +86,7 @@ public class Bot extends TelegramLongPollingBot {
         var text = """
                 Справочная информация по боту
                 
-                Для получения текущих курсов валют воспользуйтесь командами:
-                /usd - курс доллара
-                /eur - курс евро
-                /getMoney
-                /setMoney пополнить счёт, после команды номер валюты и сумма 1-rub  2-usd 3-eur
-                /exchange - обмен валюты меджу счетами, после команжды номер операции и сумма
-                 (через олин пробел) 1:rub-usd  2:rub-eur 3:usd-rub 4:usd-eur 
-                  5:eur-rub  6:eur-usd
+               
                 """;
         sendMessage(chatId, text);
     }
@@ -114,6 +103,7 @@ public class Bot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             log.error("Ошибка отправки сообщения", e);
         }
+        lastMessageRegister( chatId,text);
     }
     // Суточный отчет
     @Scheduled(cron = "0 0 0 * * *")
