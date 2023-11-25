@@ -106,13 +106,14 @@ public class Bot extends TelegramLongPollingBot {
         lastMessageRegister( chatId,text);
     }
     // Суточный отчет
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 4 * * *")
     private void sendReport() {
         messageService.sendReport().entrySet().stream()
                 .forEach(e -> sendMessage(e.getKey(),e.getValue()));
 
     }
-    @Scheduled(cron = "0 0 0 * * *")
+    // Загрузка доменов с сайта
+    @Scheduled(cron = "0 0 4 * * *")
     private void setBackorderRu() throws IOException {
         log.info("setBackorderRu");
         messageService.setDailyDomains();
