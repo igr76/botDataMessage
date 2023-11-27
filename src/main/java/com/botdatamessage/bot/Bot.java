@@ -3,34 +3,28 @@ package com.botdatamessage.bot;
 import com.botdatamessage.config.BotConfig;
 import com.botdatamessage.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /** Управление командами бота */
 @Slf4j
 @Component
 public class Bot extends TelegramLongPollingBot {
     final BotConfig config;
-    @Autowired
-    private MessageService messageService;
+    private final MessageService messageService;
 
     private static final String START = "/start";
     private static final String HELP = "/help";
 
-    public Bot(BotConfig config) {
+    public Bot(BotConfig config, MessageService messageService) {
         this.config = config;
+        this.messageService = messageService;
     }
 
     @Override
@@ -108,6 +102,7 @@ public class Bot extends TelegramLongPollingBot {
     // Суточный отчет
     @Scheduled(cron = "0 0 4 * * *")
     private void sendReport() {
+        log.info("sendReport");
         messageService.sendReport().entrySet().stream()
                 .forEach(e -> sendMessage(e.getKey(),e.getValue()));
 
