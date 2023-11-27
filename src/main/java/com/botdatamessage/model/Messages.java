@@ -21,5 +21,5 @@ public class Messages {
     String message;
     /** Владелец сообщений */
     @ManyToOne
-    User chatId;
+    User user;
 }

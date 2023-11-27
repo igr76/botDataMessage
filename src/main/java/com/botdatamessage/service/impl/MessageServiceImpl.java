@@ -9,6 +9,7 @@ import com.botdatamessage.repository.UserRepository;
 import com.botdatamessage.service.DomainService;
 import com.botdatamessage.service.MessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,10 +19,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 /** Реализация сервиса сообщений */
+@Slf4j
 @Service
 public class MessageServiceImpl implements MessageService {
     private UserRepository userRepository;
-
     private MessagesRepository messagesRepository;
     private BackorderUp backorder;
     private DomainService domainService;
@@ -35,12 +36,13 @@ public class MessageServiceImpl implements MessageService {
     private String N;
     @Override
     public void lastMessageRegister(long chatId, String text) {
+        log.info("lastMessageRegister");
         User user = new User();
         user.setChatId(chatId);
         user.setLast_message_at(LocalDateTime.now());
         userRepository.save(user);
         Messages messages = new Messages();
-        messages.setChatId(user);
+        messages.setUser(user);
         messages.setMessage(text);
         messagesRepository.save(messages);
     }

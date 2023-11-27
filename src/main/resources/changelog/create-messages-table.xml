@@ -14,17 +14,17 @@
         </preConditions>
 
         <createTable tableName="messages">
-            <column name="id" type="BIGINT" >
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="message" type="VARCHAR(32)">
+            <column name="message" type="VARCHAR(255)">
                 <constraints  nullable="true"/>
             </column>
-            <column name="chatId" type="BIGINT">
+            <column name="user_chat_id" type="BIGINT">
                 <constraints  nullable="true"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="chatId" constraintName="messages_chat_Id" referencedTableName="users"
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="user_chat_id" constraintName="messages_user_users_chat_Id" referencedTableName="users"
                                  referencedColumnNames="chat_id" onUpdate="CASCADE"/>
 
     </changeSet>
