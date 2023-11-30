@@ -2,6 +2,7 @@ package com.botdatamessage.bot;
 
 import com.botdatamessage.config.BotConfig;
 import com.botdatamessage.service.MessageService;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -100,7 +101,7 @@ public class Bot extends TelegramLongPollingBot {
         lastMessageRegister( chatId,text);
     }
     // Суточный отчет
-    @Scheduled(cron = "0 0 4 * * *")
+   // @Scheduled(cron = "15 * * * * *")
     private void sendReport() {
         log.info("sendReport");
         messageService.sendReport().entrySet().stream()
@@ -108,7 +109,8 @@ public class Bot extends TelegramLongPollingBot {
 
     }
     // Загрузка доменов с сайта
-    @Scheduled(cron = "0 0 4 * * *")
+//    @Scheduled(cron = "10 * * * * *")
+    @PostConstruct
     private void setBackorderRu() throws IOException {
         log.info("setBackorderRu");
         messageService.setDailyDomains();

@@ -53,7 +53,12 @@
             <column name="block" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
+            <column name="user_chat_id" type="BIGINT">
+            <constraints  nullable="true"/>
+            </column>
         </createTable>
+    <addForeignKeyConstraint baseTableName="domain" baseColumnNames="user_chat_id" constraintName="domain_user_users_chat_Id" referencedTableName="users"
+                             referencedColumnNames="chat_id" onUpdate="CASCADE"/>
 
     </changeSet>
 

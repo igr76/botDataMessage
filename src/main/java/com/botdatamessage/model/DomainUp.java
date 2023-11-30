@@ -1,23 +1,21 @@
 package com.botdatamessage.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 /** Сущность хранения доменов */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Domain {
-    @Id
+public class DomainUp {
     String domainname;
     int hotness;
     long price;
@@ -27,10 +25,10 @@ public class Domain {
     int visitors;
     String registrar;
     int old;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate delete_date;
     boolean rkn;
     boolean judicial;
     boolean block;
-    @ManyToOne
-    User user;
 }
