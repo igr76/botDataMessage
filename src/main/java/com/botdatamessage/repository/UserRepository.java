@@ -10,6 +10,6 @@ import java.util.List;
 /** Репозиторий  пользователей */
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
-    @Query("SELECT chat_id FROM users")
+    @Query(nativeQuery = true,value = "SELECT chat_id FROM users")
     List<Long> findAllChatId();
 }

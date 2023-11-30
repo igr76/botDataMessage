@@ -9,6 +9,7 @@ import com.botdatamessage.repository.UserRepository;
 import com.botdatamessage.service.DomainService;
 import com.botdatamessage.service.MessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,29 +19,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 /** Реализация сервиса сообщений */
+@Slf4j
 @Service
 public class MessageServiceImpl implements MessageService {
     private UserRepository userRepository;
-
     private MessagesRepository messagesRepository;
     private BackorderUp backorder;
     private DomainService domainService;
+    private DomainRepository domainRepository;
 
-    public MessageServiceImpl(UserRepository userRepository, MessagesRepository messagesRepository, BackorderUp backorder, DomainService domainService) {
+    public MessageServiceImpl(UserRepository userRepository, MessagesRepository messagesRepository, BackorderUp backorder,
+                              DomainService domainService,DomainRepository domainRepository) {
         this.userRepository = userRepository;
         this.messagesRepository = messagesRepository;
         this.backorder = backorder;
         this.domainService = domainService;
+        this.domainRepository = domainRepository;
     }
     private String N;
     @Override
     public void lastMessageRegister(long chatId, String text) {
+        log.info("lastMessageRegister");
         User user = new User();
         user.setChatId(chatId);
         user.setLast_message_at(LocalDateTime.now());
         userRepository.save(user);
         Messages messages = new Messages();
-        messages.setChatId(user);
+        messages.setUser(user);
         messages.setMessage(text);
         messagesRepository.save(messages);
     }
@@ -48,10 +53,13 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Map<Long, String> sendReport() {
-        String text =LocalDate.now().toString()+ "собрано: "+ N+ " доменов";
-        List<Long> listUsers = userRepository.findAllChatId();
+        Map<Long, Integer> mapCountDomain=domainRepository.findCountDomainOnChatId();
         Map<Long,String> reports = new HashMap<>();
-        for (Long e : listUsers) {reports.put(e,text);}
+        log.info("Map<Long,String> reports");
+        for(Map.Entry<Long, Integer> entry : mapCountDomain.entrySet()) {
+            reports.put(entry.getKey(),LocalDate.now().toString()+ "собрано: "+entry.getValue() + " доменов");
+        }
+        System.out.println(reports);
         return reports;
     }
 

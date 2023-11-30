@@ -33,8 +33,9 @@ public class MessageServiceImplTest {
     private BackorderUp backorder;
     @Mock
     private DomainService domainService;
+    private  DomainRepository domainRepository;
     @InjectMocks
-    private MessageServiceImpl messageService = new MessageServiceImpl(userRepository,messagesRepository,backorder,domainService);
+    private MessageServiceImpl messageService = new MessageServiceImpl(userRepository,messagesRepository,backorder,domainService,domainRepository);
     @Test
     void lastMessageRegisterTest() {
         User user = new User(1, LocalDateTime.of(2023, 02, 10,10,10));
