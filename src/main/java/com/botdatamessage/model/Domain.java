@@ -1,8 +1,6 @@
 package com.botdatamessage.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +16,8 @@ import java.time.LocalDateTime;
 @Entity
 public class Domain {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    long id;
     String domainname;
     int hotness;
     long price;
@@ -31,6 +31,4 @@ public class Domain {
     boolean rkn;
     boolean judicial;
     boolean block;
-    @ManyToOne
-    User user;
 }
