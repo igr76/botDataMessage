@@ -2,6 +2,7 @@ package com.botdatamessage.bot;
 
 import com.botdatamessage.config.BotConfig;
 import com.botdatamessage.service.MessageService;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -108,7 +109,9 @@ public class Bot extends TelegramLongPollingBot {
 
     }
     // Загрузка доменов с сайта
-    @Scheduled(cron = "0 0 4 * * *")
+//    @PostConstruct
+    @Scheduled(cron = "0 10 4 * * *")
+
     private void setBackorderRu() throws IOException {
         log.info("setBackorderRu");
         messageService.setDailyDomains();

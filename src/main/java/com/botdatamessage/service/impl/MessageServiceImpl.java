@@ -26,12 +26,15 @@ public class MessageServiceImpl implements MessageService {
     private MessagesRepository messagesRepository;
     private BackorderUp backorder;
     private DomainService domainService;
+    private DomainRepository domainRepository;
 
-    public MessageServiceImpl(UserRepository userRepository, MessagesRepository messagesRepository, BackorderUp backorder, DomainService domainService) {
+    public MessageServiceImpl(UserRepository userRepository, MessagesRepository messagesRepository, BackorderUp backorder,
+                              DomainService domainService,DomainRepository domainRepository) {
         this.userRepository = userRepository;
         this.messagesRepository = messagesRepository;
         this.backorder = backorder;
         this.domainService = domainService;
+        this.domainRepository = domainRepository;
     }
     private String N;
     @Override
@@ -50,10 +53,14 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Map<Long, String> sendReport() {
-        String text =LocalDate.now().toString()+ "собрано: "+ N+ " доменов";
-        List<Long> listUsers = userRepository.findAllChatId();
+        long countDomain=domainRepository.count();
         Map<Long,String> reports = new HashMap<>();
-        for (Long e : listUsers) {reports.put(e,text);}
+        List<Long> listUserChatId = userRepository.findAllChatId();
+        log.info("Map<Long,String> reports");
+        for(Long e : listUserChatId) {
+            reports.put(e,LocalDate.now().toString()+ "собрано: "+ countDomain + " доменов");
+        }
+        System.out.println(reports);
         return reports;
     }
 
