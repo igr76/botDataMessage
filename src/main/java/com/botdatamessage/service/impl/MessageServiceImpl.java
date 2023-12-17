@@ -53,11 +53,12 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Map<Long, String> sendReport() {
-        Map<Long, Integer> mapCountDomain=domainRepository.findCountDomainOnChatId();
+        long countDomain=domainRepository.count();
         Map<Long,String> reports = new HashMap<>();
+        List<Long> listUserChatId = userRepository.findAllChatId();
         log.info("Map<Long,String> reports");
-        for(Map.Entry<Long, Integer> entry : mapCountDomain.entrySet()) {
-            reports.put(entry.getKey(),LocalDate.now().toString()+ "собрано: "+entry.getValue() + " доменов");
+        for(Long e : listUserChatId) {
+            reports.put(e,LocalDate.now().toString()+ "собрано: "+ countDomain + " доменов");
         }
         System.out.println(reports);
         return reports;

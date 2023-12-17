@@ -10,7 +10,7 @@ import java.util.Map;
 
 /** Репозиторий доменов */
 @Repository
-public interface DomainRepository extends JpaRepository<Domain, String> {
-    @Query(nativeQuery = true,value = "SELECT user_chat_id, COUNT(user_chat_id) FROM domain GROUP BY user_chat_id" )
-    Map<Long,Integer> findCountDomainOnChatId();
+public interface DomainRepository extends JpaRepository<Domain, Long> {
+//    @Query(nativeQuery = true,value = "SELECT user_chat_id, COUNT(user_chat_id) FROM domain GROUP BY user_chat_id" )
+//    Map<Long,Integer> findCountDomainOnChatId();
 }

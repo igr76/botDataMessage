@@ -14,8 +14,10 @@
         </preConditions>
 
         <createTable tableName="domain">
-            <column name="domainname" type="VARCHAR(32)" >
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true"/>
+            </column>
+            <column name="domainname" type="VARCHAR(200)" >
             </column>
             <column name="hotness" type="INT">
                 <constraints nullable="false"/>
@@ -35,14 +37,14 @@
             <column name="visitors" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="registrar" type="VARCHAR(32)">
+            <column name="registrar" type="VARCHAR(54)">
                 <constraints nullable="false"/>
             </column>
             <column name="old" type="INT">
                 <constraints nullable="false"/>
             </column>
             <column name="delete_date" type="DATE">
-                <constraints unique="true" nullable="true"/>
+                <constraints nullable="true"/>
             </column>
             <column name="rkn" type="BOOLEAN">
                 <constraints nullable="false"/>
@@ -53,12 +55,7 @@
             <column name="block" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_chat_id" type="BIGINT">
-            <constraints  nullable="true"/>
-            </column>
         </createTable>
-    <addForeignKeyConstraint baseTableName="domain" baseColumnNames="user_chat_id" constraintName="domain_user_users_chat_Id" referencedTableName="users"
-                             referencedColumnNames="chat_id" onUpdate="CASCADE"/>
 
     </changeSet>
 

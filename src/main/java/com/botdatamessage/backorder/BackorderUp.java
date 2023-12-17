@@ -41,16 +41,10 @@ public class BackorderUp {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         try {
-            DomainUp[] domains = objectMapper.readValue(new URL(daily_domains), DomainUp[].class);
+            Domain[] domains = objectMapper.readValue(new URL(daily_domains), Domain[].class);
            // System.out.println(Arrays.toString(domains));
             log.info("закачка с сайта");
-            List<Long> listUsers = userRepository.findAllChatId();
-            for (Long l : listUsers) {
-                for (DomainUp e : domains) {
-                    Domain domain = domainMapper.toEntity(e);
-                    domain.setUser(new User(l,null));
-                    domainService.addDomain(domain);}
-            }
+                for (Domain e : domains) {domainService.addDomain(e);}
         } catch (IOException e) {log.error(" error закачка с сайта",e);
             // handles IO exceptions
         }
